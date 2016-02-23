@@ -26,14 +26,7 @@ public class Project {
          //add at runtime the Bouncy Castle Provider
     	//the provider is available only for this application
     	Security.addProvider(new BouncyCastleProvider());
- 
-    	//BC is the ID for the Bouncy Castle provider;
-        if (Security.getProvider("BC") == null){
-            System.out.println("Bouncy Castle provider is NOT available");
-        }
-        else{
-            System.out.println("Bouncy Castle provider is available");
-        }   
+  
         //Scanner
         Scanner input = new Scanner (System.in);
         
@@ -98,6 +91,27 @@ public class Project {
         //Prints decryptedText
         System.out.println("Decrypted Text: " + decryptedText);
         
+//    	//BC is the ID for the Bouncy Castle provider;
+//        if (Security.getProvider("BC") == null){
+//            System.out.println("Bouncy Castle provider is NOT available");
+//        }
+//        else{
+//            System.out.println("Bouncy Castle provider is available");
+//        }
+        
+//        String plaintext;
+//        
+//        Scanner s = new Scanner(System.in);
+//        // Get a line of plaintext
+//        System.out.print("Please enter a plaintext message: ");
+//        plaintext = s.nextLine();
+//        
+//        // Get a CryptoTests instance
+//        CryptoTests crypto = new CryptoTests();
+//        crypto.encryptdecrypt(plaintext, "AES");
+
+//        byte[] plainBytes = plaintext.getBytes();
+//        System.out.println("Your message was: " + new String(plainBytes));
         
     }
     
