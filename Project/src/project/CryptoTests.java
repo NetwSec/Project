@@ -99,15 +99,23 @@ public class CryptoTests {
         byte[] cipherBytes;         // To hold enciphered bytes
         String decryptedPlaintext;  // To hold deciphered text
         
+        int pm_size = 0;
+        
         switch (algorithm.toUpperCase()) {
             case "AES":
                 // Get enciphered bytes
-                cipherBytes = encryptAES(originalPlaintext);
+                cipherBytes = encryptAES(originalPlaintext.getBytes());
+                // Print the size of data
+                System.out.println("The plaintext size:" + originalPlaintext.getBytes().length);
+                System.out.print("Predicted encrypted byte size using PKCS5Padding :");
+                pm_size = originalPlaintext.getBytes().length;
+                pm_size += 16 - (pm_size % 16);
+                System.out.println(pm_size);
+                System.out.println("The encrypted byte size:" + cipherBytes.length);
                 // Print enciphered bytes
                 System.out.print("The enciphered bytes are: ");
-                for (byte theByte : cipherBytes)
-                {
-                  System.out.print(Integer.toHexString(theByte));
+                for (int j=0; j<cipherBytes.length; j++) {
+                    System.out.format("%02X ", cipherBytes[j]);
                 }
                 System.out.println();
                 // Get deciphered text
@@ -117,12 +125,18 @@ public class CryptoTests {
                 break;
             case "DES":
                 // Get enciphered bytes
-                cipherBytes = encryptDES(originalPlaintext);
+                cipherBytes = encryptDES(originalPlaintext.getBytes());
+                // Print the size of data
+                System.out.println("The plaintext size:" + originalPlaintext.getBytes().length);
+                System.out.print("Predicted encrypted byte size using PKCS5Padding :");
+                pm_size = originalPlaintext.getBytes().length;
+                pm_size += 8 - (pm_size % 8);
+                System.out.println(pm_size);
+                System.out.println("The encrypted byte size:" + cipherBytes.length);
                 // Print enciphered bytes
                 System.out.print("The enciphered bytes are: ");
-                for (byte theByte : cipherBytes)
-                {
-                  System.out.print(Integer.toHexString(theByte));
+                for (int j=0; j<cipherBytes.length; j++) {
+                    System.out.format("%02X ", cipherBytes[j]);
                 }
                 System.out.println();
                 // Get deciphered text
@@ -138,17 +152,14 @@ public class CryptoTests {
     }
 
     /**
-     * Performs encryption on plaintext using AES.
-     * @param plaintext
+     * Performs encryption on bytes using AES.
+     * @param plainBytes
      * @return array of enciphered bytes
      * @throws Exception 
      */
-    private byte[] encryptAES(String plaintext) throws Exception
+    private byte[] encryptAES(byte[] plainBytes) throws Exception
     {
         System.out.println("Encrypting using AES...");
-
-        // Convert plaintext string to byte array
-        byte[] plainBytes = plaintext.getBytes();
 
         // Initialize the Cipher object to encrypt
         AESCipher.init(Cipher.ENCRYPT_MODE, AESKey, AESiv);
@@ -199,17 +210,14 @@ public class CryptoTests {
     }
     
     /**
-     * Performs encryption on plaintext using DES.
-     * @param plaintext
+     * Performs encryption on bytes using DES.
+     * @param plainBytes
      * @return array of enciphered bytes
      * @throws Exception 
      */
-    private byte[] encryptDES(String plaintext) throws Exception
+    private byte[] encryptDES(byte[] plainBytes) throws Exception
     {
         System.out.println("Encrypting using DES...");
-
-        // Convert plaintext string to byte array
-        byte[] plainBytes = plaintext.getBytes();
 
         // Initialize the Cipher object to encrypt
         DESCipher.init(Cipher.ENCRYPT_MODE, DESKey, DESiv);
