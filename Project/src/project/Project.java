@@ -10,19 +10,25 @@ public class Project {
         // Add the Bouncy Castle Provider at runtime (only available for this application)
     	Security.addProvider(new BouncyCastleProvider());
 
-        String plaintext;
         Scanner scanner = new Scanner(System.in);
         
-        // Get a line of plaintext
-        System.out.print("Please enter text you want to encrypt: ");
-        plaintext = scanner.nextLine();
+        while (true)
+        {
+            // Get a line of plaintext
+            System.out.print("Please enter the text you want to encrypt, or exit to quit the program: ");
+            String plaintext = scanner.nextLine();
+            
+            if (plaintext.equals("exit")) break;
 
-        // Get a CryptoTests instance
-        CryptoTests crypto = new CryptoTests();
-        // AES encryption/decryption
-        crypto.encryptdecrypt(plaintext, "AES");
-        // DES encryption/decryption
-        crypto.encryptdecrypt(plaintext, "DES");
+            // Get a CryptoTests instance
+            CryptoTests crypto = new CryptoTests();
+            // AES encryption/decryption
+            crypto.encryptdecrypt(plaintext, "AES");
+            // DES encryption/decryption
+            crypto.encryptdecrypt(plaintext, "DES");
+            // Destroy the object
+            crypto = null;
+        }
     }
 
 }
