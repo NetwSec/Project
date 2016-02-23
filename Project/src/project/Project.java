@@ -40,65 +40,21 @@ public class Project {
         //Ask for user for plaintext input
         System.out.println("Enter text that you wish to encrypt: ");
         String plaintext = input.nextLine();    //Stores plaintext from user
-            
-        //Input variable
-        byte [] text = new String(plaintext).getBytes();
-        String encryptedText;   //Stores encryptedText
-        String decryptedText;   //Stores decryptedText
+
+        //Creates a new object of type DES
+        DES test = new DES(plaintext);
         
-        //Creates a new random initializing vector(IV)
-        SecureRandom rand =new SecureRandom();
-        byte [] randBytes = new byte[8];
-        rand.nextBytes(randBytes);
-        IvParameterSpec iv = new IvParameterSpec(randBytes);
+        //DES encryption
+        test.encryption();
         
-        //Creates an instance of DES Cypher in CBC set up with a PKCS5Padding through the BouncyCastle provider.
-        Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding","BC");
+        //Prints Ciphertext after encryption
+        System.out.println("Ciphertext: " + test.getCipherText());
         
-        //Creates a KeyGenerator DES with the BouncyCastle provider
-        KeyGenerator generator = KeyGenerator.getInstance("DES","BC");
+        //DES decryption
+        test.decryption();
         
-        //Generate a random key of size 64 bits
-        generator.init(64);
-        Key key = generator.generateKey();
-        
-        //Cipher initialized to encrypt with a key and with IV algorithm
-        cipher.init(Cipher.ENCRYPT_MODE,key,iv);
-        
-        //Creates an array of byte, cipherText, to hold the encrypted data
-        byte [] cipherText = new byte[cipher.getOutputSize(text.length)];
-        
-        //Cipher Text encryption
-        int ctLength = cipher.update(text,0,text.length,cipherText,0);
-        
-        //Updating the cyphertext length
-        ctLength += cipher.doFinal (cipherText, ctLength);
-        
-        //cipherText from byte to String
-        encryptedText = new String(cipherText);
-        
-        //Prints the Ciphertext
-        System.out.println("Ciphertext: " + encryptedText);
-        
-        //Cipher initialized to decrypt with key and IV algorithm
-        cipher.init(Cipher.DECRYPT_MODE, key, iv);
-         
-        //Create an array of byte, plaintext, to hold the size of the plaintext
-        byte []plainText = new byte [cipher.getOutputSize(ctLength)];
-        
-        //Continues the decryption operaton 
-        int ptLength = cipher.update(cipherText, 0, ctLength, plainText, 0);
-        
-        //Finalizes the decryption operation
-        ptLength = cipher.doFinal (plainText,ptLength);
-        
-        //Convert the text from byte into string 
-        decryptedText = new String (plainText);
-        
-        //Prints decryptedText
-        System.out.println("Decrypted Text: " + decryptedText);
-        
-        
+        //Prints Plaintext after decryption
+        System.out.println("Plaintext: " + test.getPlainText());
     }
     
 }
