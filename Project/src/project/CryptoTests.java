@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project;
 import java.security.Key;
 import java.security.SecureRandom;
@@ -10,61 +5,134 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 
 /**
- *
+ * Class CryptoTests
+ * Encrypts and decrypts using AES and DES.
  * @author alice
  */
 public class CryptoTests {
 
-    private final Cipher AESCipher;
-    private final Cipher DESCipher;
-    private final Key DESKey;
-    private final Key AESKey;
-    final private  IvParameterSpec AESiv;  //holds the initialization vector(IV)
-    final private  IvParameterSpec DESiv;  //holds the initialization vector(IV)
+    final private Cipher AESCipher;        // Cipher object to be used with AES
+    final private Cipher DESCipher;        // Cipher object to be used with DES
+    final private Key AESKey;              // Key to be used with AES
+    final private Key DESKey;              // Key to be used with DES
+    final private IvParameterSpec AESiv;   // Initialization vector to be used with AES in CBC mode
+    final private IvParameterSpec DESiv;   // Initialization vector to be used with DES in CBC mode
 
+    /**
+     * Constructor
+     * @throws Exception
+     */
     public CryptoTests() throws Exception
     {
         //AES
-        // Create cipher object for AES with CBC
-        AESCipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");    
-        AESiv = new IvParameterSpec(generateIV());
-        // Generate a key
-        AESKey = generateKey();
+        // Initialize Cipher object for AES with CBC
+        AESCipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC"); 
+        // Get 16-bit initialization vector for AES
+        AESiv = new IvParameterSpec(generateIV(16));
+        // Get 128-bit AES key
+        AESKey = generateAESKey();
         
         //DES
         // Create cipher object for DES with CBC
-        DESCipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");    
-        DESiv = new IvParameterSpec(generateIV());
-        // Generate a key
-        DESKey = generateKey();
+        DESCipher = Cipher.getInstance("DES/CBC/PKCS5Padding", "BC"); 
+        // Get 8-bit initialization vector for DES
+        DESiv = new IvParameterSpec(generateIV(8));
+        // Get 64-bit DES key
+        DESKey = generateDESKey();
+    }
+    
+    /**
+     * Generates a random 128-bit AES key
+     * @return random 128-bit DES key
+     * @throws Exception 
+     */
+    private Key generateAESKey() throws Exception
+    {
+        // Get key generator for AES 
+        KeyGenerator generator = KeyGenerator.getInstance("AES","BC");
+        // Initialize the generator for 128-bit key size
+        generator.init(128);
+        
+        // Return generated key
+        return generator.generateKey();
+    }
+    
+    /**
+     * Generates a random 64-bit DES key
+     * @return random 64-bit DES key
+     * @throws Exception 
+     */
+    private Key generateDESKey() throws Exception
+    {
+        // Get key generator for DES 
+        KeyGenerator generator = KeyGenerator.getInstance("DES","BC");
+        // Initialize the generator for 64-bit key size
+        generator.init(64);
+        
+        // Return generated key
+        return generator.generateKey();
+    }
+    
+    /**
+     * Generates a random initialization vector of size n
+     * @param n
+     * @return array of n random bytes
+     */
+    private byte[] generateIV(int n)
+    {
+        SecureRandom rand =new SecureRandom();
+        byte [] randBytes = new byte[n];
+        rand.nextBytes(randBytes);
+        
+        return randBytes;
     }
 
+    /**
+     * Calls private functions to perform encryption and decryption on 
+     * originalPlaintext using the specified algorithm.
+     * @param originalPlaintext
+     * @param algorithm
+     * @throws Exception 
+     */
     public void encryptdecrypt (String originalPlaintext, String algorithm) throws Exception
     {
-        
-        byte[] cipherBytes;
-        String decryptedPlaintext;
+        byte[] cipherBytes;         // To hold enciphered bytes
+        String decryptedPlaintext;  // To hold deciphered text
         
         switch (algorithm.toUpperCase()) {
             case "AES":
+                // Get enciphered bytes
                 cipherBytes = encryptAES(originalPlaintext);
+                // Print enciphered bytes
                 System.out.println("The enciphered bytes are: " + cipherBytes);
+                // Get deciphered text
                 decryptedPlaintext = decryptAES(cipherBytes);
+                // Print deciphered text
                 System.out.println("Your plaintext was: " + decryptedPlaintext);
                 break;
             case "DES":
-                // Call DES functions
+                // Get enciphered bytes
                 cipherBytes = encryptDES(originalPlaintext);
+                // Print enciphered bytes
                 System.out.println("The enciphered bytes are: " + cipherBytes);
+                // Get deciphered text
                 decryptedPlaintext = decryptDES(cipherBytes);
+                // Print deciphered text
                 System.out.println("Your plaintext was: " + decryptedPlaintext);
                 break;
             default:
+                // No matching algorithm available
                 System.out.println("Please use a valid algorithm ID");
                 break;
         }
     }
 
+    /**
+     * Performs encryption on plaintext using AES.
+     * @param plaintext
+     * @return array of enciphered bytes
+     * @throws Exception 
+     */
     private byte[] encryptAES(String plaintext) throws Exception
     {
         System.out.println("Encrypting using AES...");
@@ -73,15 +141,15 @@ public class CryptoTests {
         byte[] plainBytes = plaintext.getBytes();
 
         // Initialize the Cipher object to encrypt
-        AESCipher.init(Cipher.ENCRYPT_MODE, AESKey,AESiv);
+        AESCipher.init(Cipher.ENCRYPT_MODE, AESKey, AESiv);
         
-        // Allocate a byte array for the ciphertext
+        // Allocate a byte array for the ciphertext bytes
         byte[] cipherBytes = new byte[AESCipher.getOutputSize(plainBytes.length)];
 
         // Use update to encrypt
-        // input: plainBytes, input length: plainBytes.length, input offset: 0
+        // input: plainBytes, input offset: 0, input length: plainBytes.length, 
         // output to: cipherBytes, output offset: 0
-        int cipherLength = AESCipher.update(plainBytes, 0 ,plainBytes.length ,cipherBytes, 0);
+        int cipherLength = AESCipher.update(plainBytes, 0, plainBytes.length, cipherBytes, 0);
         
         // Finish encryption (if any input is left in buffer of the Cipher object)
         // output to: cipherBytes, output offset: cipherLength
@@ -91,22 +159,28 @@ public class CryptoTests {
         return cipherBytes;
     }
 
+    /**
+     * Performs decryption on ciphertext using AES.
+     * @param ciphertext
+     * @return deciphered plaintext string
+     * @throws Exception 
+     */
     private String decryptAES(byte[] ciphertext) throws Exception
     {
         System.out.println("Decrypting using AES...");
 
         // Initialize the Cipher object to decrypt
-        AESCipher.init(Cipher.DECRYPT_MODE, AESKey,AESiv);
+        AESCipher.init(Cipher.DECRYPT_MODE, AESKey, AESiv);
         
-        // Allocate a byte array for the plaintext
+        // Allocate a byte array for the plaintext bytes
         byte[] plainBytes = new byte[AESCipher.getOutputSize(ciphertext.length)];
 
         // Use update to decrypt
-        // input: ciphertext, input length: ciphertext.length, input offset: 0
+        // input: ciphertext, input offset: 0, input length: ciphertext.length, 
         // output to: plainBytes, output offset: 0
         int plainLength = AESCipher.update(ciphertext,0, ciphertext.length, plainBytes, 0);
         
-        // Finish encryption (if any input is left in buffer of the Cipher object)
+        // Finish decryption (if any input is left in buffer of the Cipher object)
         // output to: plainBytes, output offset: plainLength
         plainLength += AESCipher.doFinal(plainBytes, plainLength);
 
@@ -114,6 +188,12 @@ public class CryptoTests {
         return new String(plainBytes);
     }
     
+    /**
+     * Performs encryption on plaintext using DES.
+     * @param plaintext
+     * @return array of enciphered bytes
+     * @throws Exception 
+     */
     private byte[] encryptDES(String plaintext) throws Exception
     {
         System.out.println("Encrypting using DES...");
@@ -122,15 +202,15 @@ public class CryptoTests {
         byte[] plainBytes = plaintext.getBytes();
 
         // Initialize the Cipher object to encrypt
-        DESCipher.init(Cipher.ENCRYPT_MODE, DESKey,DESiv);
+        DESCipher.init(Cipher.ENCRYPT_MODE, DESKey, DESiv);
         
-        // Allocate a byte array for the ciphertext
+        // Allocate a byte array for the ciphertext bytes
         byte[] cipherBytes = new byte[DESCipher.getOutputSize(plainBytes.length)];
 
         // Use update to encrypt
-        // input: plainBytes, input length: plainBytes.length, input offset: 0
+        // input: plainBytes, input offset: 0, input length: plainBytes.length, 
         // output to: cipherBytes, output offset: 0
-        int cipherLength = DESCipher.update(plainBytes, 0 ,plainBytes.length ,cipherBytes, 0);
+        int cipherLength = DESCipher.update(plainBytes, 0, plainBytes.length, cipherBytes, 0);
         
         // Finish encryption (if any input is left in buffer of the Cipher object)
         // output to: cipherBytes, output offset: cipherLength
@@ -140,18 +220,24 @@ public class CryptoTests {
         return cipherBytes;
     }
 
+    /**
+     * Performs decryption on ciphertext using AES.
+     * @param ciphertext
+     * @return deciphered plaintext string
+     * @throws Exception 
+     */
     private String decryptDES(byte[] ciphertext) throws Exception
     {
         System.out.println("Decrypting using DES...");
 
         // Initialize the Cipher object to decrypt
-        DESCipher.init(Cipher.DECRYPT_MODE, DESKey,DESiv);
+        DESCipher.init(Cipher.DECRYPT_MODE, DESKey, DESiv);
         
-        // Allocate a byte array for the plaintext
+        // Allocate a byte array for the plaintext bytes
         byte[] plainBytes = new byte[DESCipher.getOutputSize(ciphertext.length)];
 
         // Use update to decrypt
-        // input: ciphertext, input length: ciphertext.length, input offset: 0
+        // input: ciphertext, input offset: 0, input length: ciphertext.length, 
         // output to: plainBytes, output offset: 0
         int plainLength = DESCipher.update(ciphertext,0, ciphertext.length, plainBytes, 0);
         
@@ -161,23 +247,5 @@ public class CryptoTests {
 
         // Return plaintext string from plaintext bytes
         return new String(plainBytes);
-    }
-    
-    //*************************************************************************
-    //Generates a random key of size 128-bits
-    private Key generateKey() throws Exception{
-        KeyGenerator generator = KeyGenerator.getInstance("AES","BC");
-        generator.init(128);
-        
-        return generator.generateKey();
-    }
-    
-    //Creates a new random initializing vector(IV) 
-    private byte[] generateIV(){
-        SecureRandom rand =new SecureRandom();
-        byte [] randBytes = new byte[16];
-        rand.nextBytes(randBytes);
-        
-        return randBytes;
     }
 }
