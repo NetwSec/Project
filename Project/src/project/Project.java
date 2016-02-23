@@ -6,11 +6,6 @@
 package project;
 import java.util.Scanner;
 import java.security.Security;
-import java.security.Key;
-import java.security.SecureRandom;
-import javax.crypto.KeyGenerator;
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
@@ -38,27 +33,27 @@ public class Project {
         //Ask for user for plaintext input
         System.out.println("Enter text that you wish to encrypt: ");
         
-        //Create Scanner object to read user input
-        Scanner input = new Scanner (System.in);
-        
-        //Stores plaintext from user
-        String plaintext = input.nextLine();
+//        //Create Scanner object to read user input
+//        Scanner input = new Scanner (System.in);
+//        
+//        //Stores plaintext from user
+//        String plaintext = input.nextLine();
+//
+//        //Creates a new object of type DES
+//        DES des_test = new DES(plaintext);
+//
+//        //DES encryption
+//        des_test.encryption();
+//
+//        //Prints Ciphertext after encryption
+//        System.out.println("Ciphertext: " + des_test.getCipherText());
+//
+//        //DES decryption
+//        des_test.decryption();
+//
+//        //Prints Plaintext after decryption
+//        System.out.println("Plaintext: " + des_test.getPlainText());
 
-        //Creates a new object of type DES
-        DES des_test = new DES(plaintext);
-
-        //DES encryption
-        des_test.encryption();
-
-        //Prints Ciphertext after encryption
-        System.out.println("Ciphertext: " + des_test.getCipherText());
-
-        //DES decryption
-        des_test.decryption();
-
-        //Prints Plaintext after decryption
-        System.out.println("Plaintext: " + des_test.getPlainText());
-/*
         //ALICE'S TESTS
         String plaintext;
         Scanner s = new Scanner(System.in);
@@ -70,10 +65,7 @@ public class Project {
         // Get a CryptoTests instance
         CryptoTests crypto = new CryptoTests();
         crypto.encryptdecrypt(plaintext, "AES");
-
-        byte[] plainBytes = plaintext.getBytes();
-        System.out.println("Your message was: " + new String(plainBytes));
-*/
+        crypto.encryptdecrypt(plaintext, "DES");
     }
 
 }
