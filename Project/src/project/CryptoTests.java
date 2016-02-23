@@ -104,7 +104,12 @@ public class CryptoTests {
                 // Get enciphered bytes
                 cipherBytes = encryptAES(originalPlaintext);
                 // Print enciphered bytes
-                System.out.println("The enciphered bytes are: " + cipherBytes);
+                System.out.print("The enciphered bytes are: ");
+                for (byte theByte : cipherBytes)
+                {
+                  System.out.print(Integer.toHexString(theByte));
+                }
+                System.out.println();
                 // Get deciphered text
                 decryptedPlaintext = decryptAES(cipherBytes);
                 // Print deciphered text
@@ -114,7 +119,12 @@ public class CryptoTests {
                 // Get enciphered bytes
                 cipherBytes = encryptDES(originalPlaintext);
                 // Print enciphered bytes
-                System.out.println("The enciphered bytes are: " + cipherBytes);
+                System.out.print("The enciphered bytes are: ");
+                for (byte theByte : cipherBytes)
+                {
+                  System.out.print(Integer.toHexString(theByte));
+                }
+                System.out.println();
                 // Get deciphered text
                 decryptedPlaintext = decryptDES(cipherBytes);
                 // Print deciphered text
