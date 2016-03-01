@@ -104,6 +104,7 @@ public class CryptoTests {
         switch (algorithm.toUpperCase()) {
             case "AES":
                 // Get enciphered bytes
+                System.out.println("Encrypting using AES...");
                 cipherBytes = encryptAES(originalPlaintext.getBytes());
                 // Print the size of data
                 System.out.println("The plaintext size:" + originalPlaintext.getBytes().length);
@@ -119,12 +120,14 @@ public class CryptoTests {
                 }
                 System.out.println();
                 // Get deciphered text
+                System.out.println("Decrypting using AES...");
                 decryptedPlaintext = decryptAES(cipherBytes);
                 // Print deciphered text
                 System.out.println("Your plaintext was: " + decryptedPlaintext);
                 break;
             case "DES":
                 // Get enciphered bytes
+                System.out.println("Encrypting using DES...");
                 cipherBytes = encryptDES(originalPlaintext.getBytes());
                 // Print the size of data
                 System.out.println("The plaintext size:" + originalPlaintext.getBytes().length);
@@ -140,6 +143,7 @@ public class CryptoTests {
                 }
                 System.out.println();
                 // Get deciphered text
+                System.out.println("Decrypting using DES...");
                 decryptedPlaintext = decryptDES(cipherBytes);
                 // Print deciphered text
                 System.out.println("Your plaintext was: " + decryptedPlaintext);
@@ -159,8 +163,6 @@ public class CryptoTests {
      */
     public byte[] encryptAES(byte[] plainBytes) throws Exception
     {
-        System.out.println("Encrypting using AES...");
-
         // Initialize the Cipher object to encrypt
         AESCipher.init(Cipher.ENCRYPT_MODE, AESKey, AESiv);
         
@@ -188,8 +190,6 @@ public class CryptoTests {
      */
     public String decryptAES(byte[] ciphertext) throws Exception
     {
-        System.out.println("Decrypting using AES...");
-
         // Initialize the Cipher object to decrypt
         AESCipher.init(Cipher.DECRYPT_MODE, AESKey, AESiv);
         
@@ -217,8 +217,6 @@ public class CryptoTests {
      */
     public byte[] encryptDES(byte[] plainBytes) throws Exception
     {
-        System.out.println("Encrypting using DES...");
-
         // Initialize the Cipher object to encrypt
         DESCipher.init(Cipher.ENCRYPT_MODE, DESKey, DESiv);
         
@@ -246,8 +244,6 @@ public class CryptoTests {
      */
     public String decryptDES(byte[] ciphertext) throws Exception
     {
-        System.out.println("Decrypting using DES...");
-
         // Initialize the Cipher object to decrypt
         DESCipher.init(Cipher.DECRYPT_MODE, DESKey, DESiv);
         
