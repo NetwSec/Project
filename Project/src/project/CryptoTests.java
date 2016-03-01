@@ -157,7 +157,7 @@ public class CryptoTests {
      * @return array of enciphered bytes
      * @throws Exception 
      */
-    private byte[] encryptAES(byte[] plainBytes) throws Exception
+    public byte[] encryptAES(byte[] plainBytes) throws Exception
     {
         System.out.println("Encrypting using AES...");
 
@@ -186,7 +186,7 @@ public class CryptoTests {
      * @return deciphered plaintext string
      * @throws Exception 
      */
-    private String decryptAES(byte[] ciphertext) throws Exception
+    public String decryptAES(byte[] ciphertext) throws Exception
     {
         System.out.println("Decrypting using AES...");
 
@@ -215,7 +215,7 @@ public class CryptoTests {
      * @return array of enciphered bytes
      * @throws Exception 
      */
-    private byte[] encryptDES(byte[] plainBytes) throws Exception
+    public byte[] encryptDES(byte[] plainBytes) throws Exception
     {
         System.out.println("Encrypting using DES...");
 
@@ -244,7 +244,7 @@ public class CryptoTests {
      * @return deciphered plaintext string
      * @throws Exception 
      */
-    private String decryptDES(byte[] ciphertext) throws Exception
+    public String decryptDES(byte[] ciphertext) throws Exception
     {
         System.out.println("Decrypting using DES...");
 
