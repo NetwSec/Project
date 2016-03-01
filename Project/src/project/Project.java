@@ -19,22 +19,93 @@ public class Project {
             System.out.print("Please enter the text you want to encrypt, extra for time test, or exit to quit the program: ");
             String plaintext = scanner.nextLine();
             
-            if (plaintext.equals("exit")) break;
-            if (plaintext.equals("extra")) 
+            if (plaintext.equals("exit"))
             {
-                extra();
                 break;
             }
-
-            // Get a CryptoTests instance
-            CryptoTests crypto = new CryptoTests();
-            // AES encryption/decryption
-            crypto.encryptdecrypt(plaintext, "AES");
-            // DES encryption/decryption
-            crypto.encryptdecrypt(plaintext, "DES");
-            // Destroy the object
-            crypto = null;
+            else if (plaintext.equals("extra")) 
+            {
+                extra();
+            }
+            else
+            {
+                encrypt_decrypt(plaintext);
+            }
         }
+    }
+    
+    public static void encrypt_decrypt (String plaintext) throws Exception
+    {
+        // Get a CryptoTests instance
+        CryptoTests crypto = new CryptoTests();
+
+        byte[] cipherBytes;         // To hold enciphered bytes
+        String decryptedPlaintext;  // To hold deciphered text
+        int pm_size = 0;            // To hold predicted message size
+
+        // DES encryption/decryption
+
+        // Get enciphered bytes
+        System.out.println("Encrypting using DES...");
+        cipherBytes = crypto.encryptDES(plaintext.getBytes());
+
+        /*
+        // Print the size of data
+        System.out.println("The plaintext size:" + plaintext.getBytes().length);
+        System.out.print("Predicted encrypted byte size using PKCS5Padding :");
+        pm_size = plaintext.getBytes().length;
+        pm_size += 8 - (pm_size % 8); //8 == aes_block_size
+        System.out.println(pm_size);
+
+        System.out.println("The encrypted byte size:" + cipherBytes.length);
+        */
+
+        // Print enciphered bytes
+        System.out.print("The enciphered bytes are: ");
+        for (int j=0; j<cipherBytes.length; j++) {
+            System.out.format("%02X ", cipherBytes[j]);
+        }
+        System.out.println();
+
+        // Get deciphered text
+        System.out.println("Decrypting using DES...");
+        decryptedPlaintext = crypto.decryptDES(cipherBytes);
+
+        // Print deciphered text
+        System.out.println("Your plaintext was: " + decryptedPlaintext);
+
+        // AES encryption/decryption
+        // Get enciphered bytes
+        System.out.println("Encrypting using AES...");
+        cipherBytes = crypto.encryptAES(plaintext.getBytes());
+
+        /*
+        // Print the size of data
+        System.out.println("The plaintext size:" + plaintext.getBytes().length);
+        System.out.print("Predicted encrypted byte size using PKCS5Padding :");
+        pm_size = plaintext.getBytes().length;
+        pm_size += 16 - (pm_size % 16); //16 == aes_block_size
+        System.out.println(pm_size);
+
+        System.out.println("The encrypted byte size:" + cipherBytes.length);
+        */
+
+        // Print enciphered bytes
+        System.out.print("The enciphered bytes are: ");
+        for (int j=0; j<cipherBytes.length; j++) {
+            System.out.format("%02X ", cipherBytes[j]);
+        }
+        System.out.println();
+
+        // Get deciphered text
+        System.out.println("Decrypting using AES...");
+        decryptedPlaintext = crypto.decryptAES(cipherBytes);
+
+        // Print deciphered text
+        System.out.println("Your plaintext was: " + decryptedPlaintext);
+
+        // Destroy the object
+        crypto = null;
     }
     
     public static void extra () throws Exception
